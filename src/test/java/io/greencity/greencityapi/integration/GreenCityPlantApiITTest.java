@@ -19,7 +19,7 @@ public class GreenCityPlantApiITTest {
 	private MockMvc mockMvc;
 
 	@Test
-	public void shouldReturnDefaultMessage() throws Exception {
+	public void plantApiShouldReturnOkayStatus() throws Exception {
 		this.mockMvc.perform(get("/v1/plants")).andDo(print()).andExpect(status().isOk());
 	}
 }

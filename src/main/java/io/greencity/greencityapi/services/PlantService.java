@@ -16,4 +16,8 @@ public class PlantService {
         return plantRepo.findAll();
     }
 
+    public PlantDto getPlantByScientificName(String plantName) {
+        return plantRepo.findByScientificName(plantName);
+    }
+
 }
