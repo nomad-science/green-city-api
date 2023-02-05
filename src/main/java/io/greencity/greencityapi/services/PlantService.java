@@ -2,7 +2,6 @@ package io.greencity.greencityapi.services;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +21,8 @@ public class PlantService {
     private PlantMapper plantMapper;
 
     public List<Plant> getPlants() {
-        Iterable<PlantDto> allPlants = plantRepo.findAll();
-        return StreamSupport.stream(allPlants.spliterator(), true)
-                .map(plantDto -> plantMapper.plantDtoToPlant(plantDto)).collect(Collectors.toList());
+        List<PlantDto> allPlants = plantRepo.findAll();
+        return allPlants.stream().map(plantDto -> plantMapper.plantDtoToPlant(plantDto)).collect(Collectors.toList());
 
     }
 

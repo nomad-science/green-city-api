@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.greencity.greencityapi.models.beans.Plant;
-import io.greencity.greencityapi.models.dto.PlantDto;
 import io.greencity.greencityapi.services.PlantService;
 
 @Controller
