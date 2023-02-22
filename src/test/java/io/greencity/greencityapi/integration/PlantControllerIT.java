@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PlantControllerITTest {
+public class PlantControllerIT {
 
 	@Autowired
 	private MockMvc mockMvc;
