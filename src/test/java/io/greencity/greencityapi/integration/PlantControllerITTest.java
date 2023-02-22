@@ -18,8 +18,20 @@ public class PlantControllerITTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	private static final String API_ROOT = "/v1/plants";
+
 	@Test
 	public void plantApiShouldReturnOkayStatus() throws Exception {
-		this.mockMvc.perform(get("/v1/plants")).andDo(print()).andExpect(status().isOk());
+		this.mockMvc.perform(get(API_ROOT)).andDo(print()).andExpect(status().isOk());
+	}
+
+	@Test
+	public void plantApiShouldReturnNotFoundStatusCodeForValidEntry() throws Exception {
+		this.mockMvc.perform(get(API_ROOT + "/taraxacum officinale")).andDo(print()).andExpect(status().isOk());
+	}
+
+	@Test
+	public void plantApiShouldReturnNotFoundStatusCodeForInvalidEntry() throws Exception {
+		this.mockMvc.perform(get(API_ROOT + "/obviously fake")).andDo(print()).andExpect(status().isNotFound());
 	}
 }

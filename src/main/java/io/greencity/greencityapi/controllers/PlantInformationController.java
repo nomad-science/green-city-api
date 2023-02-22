@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import io.greencity.greencityapi.models.beans.Plant;
 import io.greencity.greencityapi.services.PlantService;
 
+import io.greencity.greencityapi.models.beans.SearchResult;
+
 @Controller
 @RequestMapping(value = "/v1/plants")
 public class PlantInformationController {
@@ -26,8 +28,9 @@ public class PlantInformationController {
     }
 
     @GetMapping("/{plantName}")
-    public ResponseEntity<Plant> getSpecificPlant(@PathVariable String plantName) {
-        return ResponseEntity.ok(service.getPlantByScientificName(plantName));
+    public ResponseEntity<SearchResult<Plant>> getSpecificPlant(@PathVariable String plantName) {
+        SearchResult<Plant> plantSearchResult = service.getPlantByScientificName(plantName);
+        return new ResponseEntity<>(plantSearchResult, plantSearchResult.getStatusCode());
     }
 
 }
