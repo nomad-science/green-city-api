@@ -36,7 +36,7 @@ public class PlantServiceTest {
         List<PlantDto> tests = new ArrayList<>();
         tests.add(testPlant);
         given(fakeRepo.findAll()).willReturn(tests);
-        assertEquals("test-name", service.getPlants().get(0).getScientificName());
+        assertEquals("test-name", service.getPlants().getResults().get(0).getScientificName());
     }
 
     @Test

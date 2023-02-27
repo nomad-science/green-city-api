@@ -22,9 +22,9 @@ public class PlantInformationController {
     private PlantService service;
 
     @GetMapping("")
-    public ResponseEntity<List<Plant>> getPlantResults() {
-        List<Plant> results = service.getPlants();
-        return ResponseEntity.ok(results);
+    public ResponseEntity<SearchResult<Plant>> getPlantResults() {
+        SearchResult<Plant> allPlants = service.getPlants();
+        return new ResponseEntity<>(allPlants, allPlants.getStatusCode());
     }
 
     @GetMapping("/{plantName}")

@@ -2,11 +2,11 @@ package io.greencity.greencityapi.services;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.greencity.greencityapi.mapping.interfaces.PlantMapper;
@@ -24,9 +24,17 @@ public class PlantService {
     @Autowired
     private PlantMapper plantMapper;
 
-    public List<Plant> getPlants() {
-        List<PlantDto> allPlants = plantRepo.findAll();
-        return allPlants.stream().map(plantDto -> plantMapper.plantDtoToPlant(plantDto)).collect(Collectors.toList());
+    public SearchResult<Plant> getPlants() {
+        SearchResult<Plant> allPlantsResults = new SearchResult<>();
+        List<Plant> allResults = new ArrayList<>();
+        Optional<List<PlantDto>> allPlants = Optional.ofNullable(plantRepo.findAll());
+        if (allPlants.isPresent()) {
+            allResults = allPlants.get().stream().map(plantDto -> plantMapper.plantDtoToPlant(plantDto))
+                    .collect(Collectors.toList());
+        }
+
+        allPlantsResults.setResults(allResults);
+        return allPlantsResults;
 
     }
 
@@ -36,12 +44,7 @@ public class PlantService {
 
         Optional<PlantDto> plantSearchResult = Optional.ofNullable(plantRepo.findByScientificName(plantName));
         if (plantSearchResult.isPresent()) {
-            Plant convertedPlantResult = plantMapper.plantDtoToPlant(plantSearchResult.get());
-            resultList.add(convertedPlantResult);
-            searchResult.setResults(resultList);
-            searchResult.setStatusCode(HttpStatus.OK);
-        } else {
-            searchResult.setStatusCode(HttpStatus.NOT_FOUND);
+            resultList.add(plantMapper.plantDtoToPlant(plantSearchResult.get()));
         }
 
         searchResult.setResults(resultList);
