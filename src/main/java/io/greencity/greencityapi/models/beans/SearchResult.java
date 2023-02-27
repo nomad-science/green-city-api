@@ -4,22 +4,30 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
 @Data
-@NoArgsConstructor
 @Component
 public class SearchResult<T> {
 
     private HttpStatus statusCode;
     private List<T> results;
 
+    public SearchResult() {
+        this.results = new ArrayList<>();
+        // We treat an empty list in a Search Result object as a 404
+        this.statusCode = HttpStatus.NOT_FOUND;
+    }
+
     public void setResults(List<T> results) {
         this.results = results;
-        this.statusCode = CollectionUtils.isEmpty(results) ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+        if (!CollectionUtils.isEmpty(results)) {
+            this.statusCode = HttpStatus.OK;
+        }
     }
 
 }

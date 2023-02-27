@@ -1,7 +1,6 @@
 package io.greencity.greencityapi.services;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class PlantService {
     private PlantMapper plantMapper;
 
     public SearchResult<Plant> getPlants() {
-        SearchResult<Plant> allPlantsResults = prepareResult();
+        SearchResult<Plant> allPlantsResults = new SearchResult<>();
         Optional<List<PlantDto>> allPlants = Optional.ofNullable(plantRepo.findAll());
         if (allPlants.isPresent()) {
             allPlantsResults.setResults(plantMapper.plantDtoListToPlants(allPlants.get().stream()));
@@ -34,7 +33,7 @@ public class PlantService {
     }
 
     public SearchResult<Plant> getPlantByScientificName(String plantName) {
-        SearchResult<Plant> searchResult = prepareResult();
+        SearchResult<Plant> searchResult = new SearchResult<>();
 
         Optional<PlantDto> plantSearchResult = Optional.ofNullable(plantRepo.findByScientificName(plantName));
         if (plantSearchResult.isPresent()) {
@@ -45,11 +44,4 @@ public class PlantService {
 
         return searchResult;
     }
-
-    public <T> SearchResult<T> prepareResult() {
-        SearchResult<T> searchResult = new SearchResult<>();
-        searchResult.setResults(new ArrayList<>());
-        return searchResult;
-    }
-
 }
