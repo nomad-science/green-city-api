@@ -1,10 +1,8 @@
 package io.greencity.greencityapi.services;
 
 import java.util.List;
-import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,29 +23,32 @@ public class PlantService {
     private PlantMapper plantMapper;
 
     public SearchResult<Plant> getPlants() {
-        SearchResult<Plant> allPlantsResults = new SearchResult<>();
-        List<Plant> allResults = new ArrayList<>();
+        SearchResult<Plant> allPlantsResults = prepareResult();
         Optional<List<PlantDto>> allPlants = Optional.ofNullable(plantRepo.findAll());
         if (allPlants.isPresent()) {
-            allResults = allPlants.get().stream().map(plantDto -> plantMapper.plantDtoToPlant(plantDto))
-                    .collect(Collectors.toList());
+            allPlantsResults.setResults(plantMapper.plantDtoListToPlants(allPlants.get().stream()));
         }
 
-        allPlantsResults.setResults(allResults);
         return allPlantsResults;
 
     }
 
     public SearchResult<Plant> getPlantByScientificName(String plantName) {
-        SearchResult<Plant> searchResult = new SearchResult<>();
-        List<Plant> resultList = new LinkedList<>();
+        SearchResult<Plant> searchResult = prepareResult();
 
         Optional<PlantDto> plantSearchResult = Optional.ofNullable(plantRepo.findByScientificName(plantName));
         if (plantSearchResult.isPresent()) {
-            resultList.add(plantMapper.plantDtoToPlant(plantSearchResult.get()));
+            List<Plant> updatedResults = searchResult.getResults();
+            updatedResults.add(plantMapper.plantDtoToPlant(plantSearchResult.get()));
+            searchResult.setResults(updatedResults);
         }
 
-        searchResult.setResults(resultList);
+        return searchResult;
+    }
+
+    public <T> SearchResult<T> prepareResult() {
+        SearchResult<T> searchResult = new SearchResult<>();
+        searchResult.setResults(new ArrayList<>());
         return searchResult;
     }
 
