@@ -20,12 +20,23 @@ public class SearchResult<T> {
     public SearchResult() {
         this.results = new ArrayList<>();
         // We treat an empty list in a Search Result object as a 404
-        this.statusCode = HttpStatus.NOT_FOUND;
+        updateStatus();
     }
 
-    public void setResults(List<T> results) {
-        this.results = results;
-        if (!CollectionUtils.isEmpty(results)) {
+    public void setResults(List<T> input) {
+        results.addAll(input);
+        updateStatus();
+    }
+
+    public void setResults(T input) {
+        results.add(input);
+        updateStatus();
+    }
+
+    public void updateStatus() {
+        if (CollectionUtils.isEmpty(results)) {
+            this.statusCode = HttpStatus.NOT_FOUND;
+        } else {
             this.statusCode = HttpStatus.OK;
         }
     }

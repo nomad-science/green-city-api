@@ -37,9 +37,7 @@ public class PlantService {
 
         Optional<PlantDto> plantSearchResult = Optional.ofNullable(plantRepo.findByScientificName(plantName));
         if (plantSearchResult.isPresent()) {
-            List<Plant> updatedResults = searchResult.getResults();
-            updatedResults.add(plantMapper.plantDtoToPlant(plantSearchResult.get()));
-            searchResult.setResults(updatedResults);
+            searchResult.setResults(plantMapper.plantDtoToPlant(plantSearchResult.get()));
         }
 
         return searchResult;
