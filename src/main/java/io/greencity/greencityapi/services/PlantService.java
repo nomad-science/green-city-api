@@ -21,8 +21,8 @@ public class PlantService {
     @Autowired
     private PlantMapper plantMapper;
 
-    public SearchResult<Plant> getPlants() {
-        SearchResult<Plant> allPlantsResults = new SearchResult<>();
+    public SearchResult getPlants() {
+        SearchResult allPlantsResults = new SearchResult();
         Optional<List<PlantDto>> allPlants = Optional.ofNullable(plantRepo.findAll());
         if (allPlants.isPresent()) {
             allPlantsResults.setResults(plantMapper.plantDtoListToPlants(allPlants.get().stream()));
@@ -32,8 +32,8 @@ public class PlantService {
 
     }
 
-    public SearchResult<Plant> getPlantByScientificName(String plantName) {
-        SearchResult<Plant> searchResult = new SearchResult<>();
+    public SearchResult getPlantByScientificName(String plantName) {
+        SearchResult searchResult = new SearchResult();
 
         Optional<PlantDto> plantSearchResult = Optional.ofNullable(plantRepo.findByScientificName(plantName));
         if (plantSearchResult.isPresent()) {

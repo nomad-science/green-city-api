@@ -6,39 +6,40 @@ import org.springframework.util.CollectionUtils;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
 @Data
 @Component
-public class SearchResult<T> {
+public class SearchResult {
 
     private HttpStatus statusCode;
-    private List<T> results;
+    private List<Object> results;
 
     public SearchResult() {
         this.results = new ArrayList<>();
-        // We treat an empty list in a Search Result object as a 404
-        updateStatus();
+
     }
 
-    public void setResults(List<T> input) {
+    public void setResults(List<? extends BaseEntity> input) {
         results.addAll(input);
-        updateStatus();
+
     }
 
-    public void setResults(T input) {
+    public void setResults(Object input) {
         results.add(input);
-        updateStatus();
+
     }
 
-    public void updateStatus() {
+    public HttpStatus getStatusCode() {
         if (CollectionUtils.isEmpty(results)) {
             this.statusCode = HttpStatus.NOT_FOUND;
         } else {
             this.statusCode = HttpStatus.OK;
         }
+        return this.statusCode;
     }
 
 }
