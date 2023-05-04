@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.greencity.greencityapi.mapping.interfaces.PlantMapper;
-import io.greencity.greencityapi.models.beans.Plant;
 import io.greencity.greencityapi.models.dto.PlantDto;
 import io.greencity.greencityapi.models.beans.SearchResult;
 import io.greencity.greencityapi.repositories.PlantRepository;
@@ -25,7 +24,7 @@ public class PlantService {
         SearchResult allPlantsResults = new SearchResult();
         Optional<List<PlantDto>> allPlants = Optional.ofNullable(plantRepo.findAll());
         if (allPlants.isPresent()) {
-            allPlantsResults.setResults(plantMapper.plantDtoListToPlants(allPlants.get().stream()));
+            allPlantsResults.setResults(plantMapper.convertDtosList(allPlants.get().stream()));
         }
 
         return allPlantsResults;
@@ -37,7 +36,7 @@ public class PlantService {
 
         Optional<PlantDto> plantSearchResult = Optional.ofNullable(plantRepo.findByScientificName(plantName));
         if (plantSearchResult.isPresent()) {
-            searchResult.setResults(plantMapper.plantDtoToPlant(plantSearchResult.get()));
+            searchResult.setResults(plantMapper.convertDto(plantSearchResult.get()));
         }
 
         return searchResult;

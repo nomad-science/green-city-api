@@ -20,7 +20,7 @@ class PlantMappingTest {
 	void plantMappingShouldConvertValuesCorrectly() {
 		PlantDto dto = new PlantDto();
 		dto.setScientificName("test-name");
-		Plant testPlant = plantMapper.plantDtoToPlant(dto);
+		Plant testPlant = plantMapper.convertDto(dto);
 		assertEquals(testPlant.getScientificName(), dto.getScientificName());
 	}
 
