@@ -2,7 +2,6 @@ package io.greencity.greencityapi.models.beans;
 
 import org.springframework.stereotype.Component;
 
-import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -3,9 +3,11 @@ package io.greencity.greencityapi.models.beans;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Component
 public class Plant extends BaseEntity {

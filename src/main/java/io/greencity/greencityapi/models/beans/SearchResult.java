@@ -6,7 +6,6 @@ import org.springframework.util.CollectionUtils;
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -23,12 +22,12 @@ public class SearchResult {
 
     }
 
-    public void setResults(List<? extends BaseEntity> input) {
+    public <T extends BaseEntity> void setResults(List<T> input) {
         results.addAll(input);
 
     }
 
-    public void setResults(Object input) {
+    public <T extends BaseEntity> void setResults(T input) {
         results.add(input);
 
     }
