@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.greencity.greencityapi.services.PlantService;
-
+import io.greencity.greencityapi.models.beans.Plant;
 import io.greencity.greencityapi.models.beans.SearchResult;
 
 @Controller
@@ -19,14 +19,14 @@ public class PlantInformationController {
     private PlantService service;
 
     @GetMapping("")
-    public ResponseEntity<SearchResult> getPlantResults() {
-        SearchResult allPlants = service.getPlants();
+    public ResponseEntity<SearchResult<Plant>> getPlantResults() {
+        SearchResult<Plant> allPlants = service.getPlants();
         return new ResponseEntity<>(allPlants, allPlants.getStatusCode());
     }
 
     @GetMapping("/{plantName}")
-    public ResponseEntity<SearchResult> getSpecificPlant(@PathVariable String plantName) {
-        SearchResult plantSearchResult = service.getPlantByScientificName(plantName);
+    public ResponseEntity<SearchResult<Plant>> getSpecificPlant(@PathVariable String plantName) {
+        SearchResult<Plant> plantSearchResult = service.getPlantByScientificName(plantName);
         return new ResponseEntity<>(plantSearchResult, plantSearchResult.getStatusCode());
     }
 

@@ -12,22 +12,22 @@ import org.springframework.http.HttpStatus;
 
 @Data
 @Component
-public class SearchResult {
+public class SearchResult<T> {
 
     private HttpStatus statusCode;
-    private List<Object> results;
+    private List<T> results;
 
     public SearchResult() {
         this.results = new ArrayList<>();
 
     }
 
-    public <T extends BaseEntity> void setResults(List<T> input) {
+    public void setResults(List<T> input) {
         results.addAll(input);
 
     }
 
-    public <T extends BaseEntity> void setResults(T input) {
+    public void setResults(T input) {
         results.add(input);
 
     }

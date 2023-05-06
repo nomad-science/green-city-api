@@ -2,6 +2,7 @@ package io.greencity.greencityapi.unit.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
+import java.util.Optional;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import io.greencity.greencityapi.models.dto.PlantDto;
+import io.greencity.greencityapi.models.beans.Plant;
 import io.greencity.greencityapi.models.beans.SearchResult;
 
 import io.greencity.greencityapi.repositories.PlantRepository;
@@ -46,22 +48,22 @@ public class PlantServiceTest {
     void plantServiceConvertsSampleDataCorrectly() {
         List<PlantDto> testData = setup(3);
         given(fakeRepo.findAll()).willReturn(testData);
-        SearchResult testResults = service.getPlants();
+        SearchResult<Plant> testResults = service.getPlants();
         assertEquals(3, testResults.getResults().size());
     }
 
     @Test
     void plantServiceReturnsEmptySearchResultsAndCorrectStatusCodeForInvalidEntry() {
-        given(fakeRepo.findByScientificName(TEST_NAME)).willReturn(null);
-        SearchResult testResult = service.getPlantByScientificName(TEST_NAME);
+        given(fakeRepo.findByScientificName(TEST_NAME)).willReturn(Optional.ofNullable(null));
+        SearchResult<Plant> testResult = service.getPlantByScientificName(TEST_NAME);
         assertEquals(0, testResult.getResults().size());
         assertEquals(HttpStatus.NOT_FOUND, testResult.getStatusCode());
     }
 
     @Test
     void plantServiceReturnsSearchResultAndOkayStatusForExistingEntry() {
-        given(fakeRepo.findByScientificName(TEST_NAME)).willReturn(new PlantDto());
-        SearchResult testResult = service.getPlantByScientificName(TEST_NAME);
+        given(fakeRepo.findByScientificName(TEST_NAME)).willReturn(Optional.of(new PlantDto()));
+        SearchResult<Plant> testResult = service.getPlantByScientificName(TEST_NAME);
         assertEquals(1, testResult.getResults().size());
         assertEquals(HttpStatus.OK, testResult.getStatusCode());
     }
